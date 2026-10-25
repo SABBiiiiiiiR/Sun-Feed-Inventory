@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sun Feed Analyzer</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header>
+  <h1>Sun Feed - Inventory &amp; Sales Analyzer</h1>
+    <span id="fname"></span>
+      <label class="btn">Excel upload
+          <input id="file" type="file" accept=".xls,.xlsx" hidden>
+            </label>
+            </header>
+
+            <main>
+              <div id="empty" class="card">
+                  Upore "Excel upload" e click kore <b>Finish Goods Inventory - Sun Feed.xls</b> select korun.
+                    </div>
+
+                      <div id="app">
+                          <div class="card">
+                                <div class="row">
+                                        <label>From <input type="date" id="start"></label>
+                                                <label>To <input type="date" id="end"></label>
+                                                        <label>Category <select id="category"></select></label>
+                                                                <label>Location <select id="location"></select></label>
+                                                                        <label>Officer <select id="officer"></select></label>
+                                                                                <label>Trend
+                                                                                          <select id="freq">
+                                                                                                      <option value="D">Daily</option>
+                                                                                                                  <option value="W">Weekly</option>
+                                                                                                                              <option value="M" selected>Monthly</option>
+                                                                                                                                        </select>
+                                                                                                                                                </label>
+                                                                                                                                                        <label><input type="checkbox" id="noopen"> Opening Stock rows bad din</label>
+                                                                                                                                                                <button id="applyBtn">Apply</button>
+                                                                                                                                                                      </div>
+                                                                                                                                                                            <div class="small" id="info" style="margin-top:8px"></div>
+                                                                                                                                                                                </div>
+
+                                                                                                                                                                                    <div class="kpis" id="kpis"></div>
+
+                                                                                                                                                                                        <div class="grid2">
+                                                                                                                                                                                              <div class="card"><h2>Trend (MT)</h2><div class="chart"><canvas id="c_trend"></canvas></div></div>
+                                                                                                                                                                                                    <div class="card"><h2>Category-wise Sales (MT)</h2><div class="chart"><canvas id="c_cat"></canvas></div></div>
+                                                                                                                                                                                                          <div class="card"><h2>Top 10 product (Sales MT)</h2><div class="chart"><canvas id="c_prod"></canvas></div></div>
+                                                                                                                                                                                                                <div class="card"><h2>Top 10 customer (Sales MT)</h2><div class="chart"><canvas id="c_cust"></canvas></div></div>
+                                                                                                                                                                                                                    </div>
+
+                                                                                                                                                                                                                        <div class="card">
+                                                                                                                                                                                                                              <h2>Product-wise movement &amp; estimated stock (MT)</h2>
+                                                                                                                                                                                                                                    <div class="small">Stock = Production + Sales Return + Stock Correction - Sales - Transfer Out - Re-Process (filter range onujayi). Apnar Finished Goods Report er sathe milie nin.</div>
+                                                                                                                                                                                                                                          <div class="scroll"><table id="t_prod"></table></div>
+                                                                                                                                                                                                                                              </div>
+
+                                                                                                                                                                                                                                                  <div class="grid2">
+                                                                                                                                                                                                                                                        <div class="card"><h2>Top customers (Sales)</h2><div class="scroll"><table id="t_cust"></table></div></div>
+                                                                                                                                                                                                                                                              <div class="card"><h2>Officer-wise Sales</h2><div class="scroll"><table id="t_off"></table></div></div>
+                                                                                                                                                                                                                                                                  </div>
+
+                                                                                                                                                                                                                                                                      <div class="card"><h2>Area-wise Sales (top 20)</h2><div class="scroll"><table id="t_area"></table></div></div>
+
+                                                                                                                                                                                                                                                                          <div class="card"><h2>Data check</h2><div id="quality"></div></div>
+
+                                                                                                                                                                                                                                                                              <div class="card">
+                                                                                                                                                                                                                                                                                    <h2>Transactions</h2>
+                                                                                                                                                                                                                                                                                          <div class="row" style="margin-bottom:8px">
+                                                                                                                                                                                                                                                                                                  <input id="q" placeholder="Search (product, customer, remarks...)" style="width:320px">
+                                                                                                                                                                                                                                                                                                          <button id="searchBtn">Search</button>
+                                                                                                                                                                                                                                                                                                                  <span class="small" id="rowinfo"></span>
+                                                                                                                                                                                                                                                                                                                        </div>
+                                                                                                                                                                                                                                                                                                                              <div class="scroll"><table id="t_rows"></table></div>
+                                                                                                                                                                                                                                                                                                                                  </div>
+
+                                                                                                                                                                                                                                                                                                                                      <div class="card">
+                                                                                                                                                                                                                                                                                                                                            <h2>Onno sheet gulo dekhun</h2>
+                                                                                                                                                                                                                                                                                                                                                  <div class="row" style="margin-bottom:8px">
+                                                                                                                                                                                                                                                                                                                                                          <select id="sheetSel"></select>
+                                                                                                                                                                                                                                                                                                                                                                  <span class="small">Prothom 150 row</span>
+                                                                                                                                                                                                                                                                                                                                                                        </div>
+                                                                                                                                                                                                                                                                                                                                                                              <div class="scroll"><table id="t_sheet"></table></div>
+                                                                                                                                                                                                                                                                                                                                                                                  </div>
+                                                                                                                                                                                                                                                                                                                                                                                    </div>
+                                                                                                                                                                                                                                                                                                                                                                                    </main>
+
+                                                                                                                                                                                                                                                                                                                                                                                    <script src="lib/xlsx.full.min.js"></script>
+                                                                                                                                                                                                                                                                                                                                                                                    <script src="lib/chart.umd.js"></script>
+                                                                                                                                                                                                                                                                                                                                                                                    <script src="app.js"></script>
+                                                                                                                                                                                                                                                                                                                                                                                    </body>
+                                                                                                                                                                                                                                                                                                                                                                                    </html>
